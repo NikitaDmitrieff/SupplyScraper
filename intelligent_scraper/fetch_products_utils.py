@@ -3,7 +3,7 @@ import os
 from crawl4ai import WebCrawler
 from crawl4ai.extraction_strategy import LLMExtractionStrategy
 from pydantic import BaseModel as BM, Field
-from config import setup_api_keys_and_langsmith
+from BaseModel.base_model_config import setup_api_keys_and_langsmith
 import json
 import pandas as pd
 

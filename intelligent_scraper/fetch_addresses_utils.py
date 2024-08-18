@@ -1,3 +1,4 @@
+import csv
 import os
 from typing import List
 
@@ -88,27 +89,63 @@ def get_shop_details(api_key: str, place_id: str) -> dict:
         return None
 
 
-# Example usage:
-if __name__ == "__main__":
+def save_shops_to_csv(shops: List[dict], filename: str):
+    """Save shop details to a CSV file."""
+    with open(filename, mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            ["Name", "Rating", "Phone Number", "Address", "Website"]
+        )  # Header
+        for shop in shops:
+            writer.writerow(
+                [
+                    shop.get("name", "no name"),
+                    shop.get("rating", "no rating"),
+                    shop.get("formatted_phone_number", "no phone"),
+                    shop.get("formatted_address", "no address"),
+                    shop.get("website", "no website"),
+                ]
+            )
+
+
+def query_a_product(
+    product: str = "Candles",
+    latitude: float = 48.8566,  # Default is Paris
+    longitude: float = 2.3522,  # Default is Paris
+    radius: int = 500,  # Search radius in meters
+    max_shops: int = 100,  # Maximum number of shops to gather
+    output_filename: str = "shops.csv",
+):
     api_key = os.getenv("GOOGLE_API_KEY")
-    latitude = 48.8566  # Latitude for Paris
-    longitude = 2.3522  # Longitude for Paris
-    radius = 500  # Search radius in meters
 
-    categories = ProductCategoryMapper().map_product_to_category(
-        product_query="a green big dinosor"
-    )
+    # Map the product to relevant categories
+    categories = ProductCategoryMapper().map_product_to_category(product_query=product)
+    print(f"Categories for '{product}': {categories}")
 
-    print(categories)
-
+    # Retrieve shops in the area
     shops = get_all_shops_in_area(
-        api_key, latitude, longitude, radius, type_filters=categories
+        api_key=api_key,
+        latitude=latitude,
+        longitude=longitude,
+        radius=radius,
+        type_filters=categories,
     )
 
+    detailed_shops = []
     for index, shop in enumerate(shops):
-        if index > 100:
+        if index >= max_shops:
             break
-        else:
-            shop_details = get_shop_details(api_key, shop["place_id"])
+
+        shop_details = get_shop_details(api_key, shop["place_id"])
+        if shop_details:
+            detailed_shops.append(shop_details)
             shop_address = shop_details.get("website", "None")
-            print(shop_details.get("name", "no name"), shop_address)
+            print(f"{shop_details.get('name', 'No name')}, {shop_address}")
+
+    # Save the gathered shop details to a CSV file
+    save_shops_to_csv(detailed_shops, output_filename)
+    print(f"Shop details saved to {output_filename}")
+
+
+if __name__ == "__main__":
+    query_a_product(product="iphone")

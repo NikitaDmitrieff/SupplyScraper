@@ -2,7 +2,7 @@ import json
 from typing import List
 from crawl4ai import WebCrawler
 from crawl4ai.extraction_strategy import LLMExtractionStrategy
-from intelligent_scraper.crawler_utils import Product, json_to_csv
+from intelligent_scraper.fetch_products_utils import Product, json_to_csv
 import os
 
 
