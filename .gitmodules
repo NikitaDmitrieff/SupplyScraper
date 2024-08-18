@@ -1,0 +1,3 @@
+[submodule "intelligent_scraper/BaseModel"]
+	path = intelligent_scraper/BaseModel
+	url = https://github.com/NikitaDmitrieff/BaseModel.git
