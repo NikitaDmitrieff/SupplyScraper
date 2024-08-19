@@ -15,11 +15,11 @@ Choose for the product "bread":
 ]
 
 Available filter types:
-- pharmacy
-- beauty_salon
-- supermarket
-- convenience_store
-- drugstore
+pharmacy
+beauty_salon
+supermarket
+convenience_store
+drugstore
 
 Choose for the product "white coco shampoo":
 [
@@ -29,11 +29,11 @@ Choose for the product "white coco shampoo":
 ]
 
 Available filter types:
-- shoe_store
-- sporting_goods_store
-- department_store
-- supermarket
-- fashion_store
+shoe_store
+sporting_goods_store
+department_store
+supermarket
+fashion_store
 
 Choose for the product "red running shoes":
 [

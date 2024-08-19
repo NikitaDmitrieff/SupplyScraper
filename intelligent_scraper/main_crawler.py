@@ -1,12 +1,13 @@
 import csv
 import json
+from typing import List
 
 from intelligent_scraper.fetch_addresses_utils import query_a_product
 from intelligent_scraper.fetch_products import ShopInventoryScraper
 from intelligent_scraper.fetch_products_utils import json_to_csv
 
 
-def retrieve_websites(csv_file_path):
+def retrieve_websites(csv_file_path: str) -> List:
     websites = []
 
     with open(csv_file_path, mode="r", encoding="utf-8") as file:
@@ -19,7 +20,7 @@ def retrieve_websites(csv_file_path):
     return websites
 
 
-def retrieve_products_with_keyword(csv_file_path, keyword):
+def retrieve_products_with_keyword(csv_file_path: str, keyword: str) -> List:
     matching_rows = []
 
     with open(csv_file_path, mode="r", encoding="utf-8") as file:
@@ -35,12 +36,15 @@ def retrieve_products_with_keyword(csv_file_path, keyword):
 
 
 if __name__ == "__main__":
+    max_website_search = 10
     shops_csv_name = "scrapped_shops.csv"
+
     query_a_product(product="iphone", output_filename=shops_csv_name)
     websites = retrieve_websites(shops_csv_name)
+
     product_list = []
 
-    for website in websites[: min(len(websites), 2)]:
+    for website in websites[: min(len(websites), max_website_search)]:
         nearby_shops = [""]
         scraper = ShopInventoryScraper(base_url=website, nearby_shops_urls=nearby_shops)
         products = scraper.scrape_inventory()
